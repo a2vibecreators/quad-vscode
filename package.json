@@ -1,0 +1,362 @@
+{
+  "name": "quad-doc-generator",
+  "displayName": "QUAD Doc Generator",
+  "description": "AI-powered code documentation generator using Google Gemini. Supports 10+ languages with multilingual explanations.",
+  "version": "1.0.0",
+  "publisher": "a2vibecreators",
+  "author": {
+    "name": "A2Vibe Creators LLC",
+    "email": "contact@a2vibecreators.com",
+    "url": "https://a2vibecreators.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a2vibecreators/quad-vscode-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/a2vibecreators/quad-vscode-plugin/issues"
+  },
+  "homepage": "https://quadframe.work",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "documentation",
+    "ai",
+    "gemini",
+    "code documentation",
+    "jsdoc",
+    "javadoc",
+    "docstring",
+    "typescript",
+    "javascript",
+    "python",
+    "java",
+    "go",
+    "rust",
+    "c++",
+    "c#",
+    "php",
+    "ruby",
+    "multilingual"
+  ],
+  "icon": "assets/icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onLanguage:typescript",
+    "onLanguage:javascript",
+    "onLanguage:typescriptreact",
+    "onLanguage:javascriptreact",
+    "onLanguage:python",
+    "onLanguage:java",
+    "onLanguage:go",
+    "onLanguage:rust",
+    "onLanguage:cpp",
+    "onLanguage:c",
+    "onLanguage:csharp",
+    "onLanguage:php",
+    "onLanguage:ruby",
+    "onLanguage:kotlin",
+    "onLanguage:swift"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "quad.documentFunction",
+        "title": "QUAD: Document Function/Method",
+        "icon": "$(book)"
+      },
+      {
+        "command": "quad.documentFile",
+        "title": "QUAD: Document Entire File",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "quad.documentSelection",
+        "title": "QUAD: Document Selection",
+        "icon": "$(selection)"
+      },
+      {
+        "command": "quad.explainCode",
+        "title": "QUAD: Explain This Code",
+        "icon": "$(question)"
+      },
+      {
+        "command": "quad.improveCode",
+        "title": "QUAD: Suggest Improvements",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "quad.setApiKey",
+        "title": "QUAD: Set Gemini API Key"
+      },
+      {
+        "command": "quad.setLanguage",
+        "title": "QUAD: Set Response Language"
+      },
+      {
+        "command": "quad.showUsage",
+        "title": "QUAD: Show API Usage"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "quad.submenu",
+          "group": "quad"
+        }
+      ],
+      "quad.submenu": [
+        {
+          "command": "quad.documentFunction",
+          "group": "1_document"
+        },
+        {
+          "command": "quad.documentSelection",
+          "group": "1_document"
+        },
+        {
+          "command": "quad.explainCode",
+          "group": "2_explain"
+        },
+        {
+          "command": "quad.improveCode",
+          "group": "2_explain"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "quad.submenu",
+        "label": "QUAD Doc Generator"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "quad.documentFunction",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "quad.explainCode",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
+        "when": "editorTextFocus && editorHasSelection"
+      },
+      {
+        "command": "quad.documentSelection",
+        "key": "ctrl+alt+d",
+        "mac": "cmd+alt+d",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "QUAD Doc Generator",
+      "properties": {
+        "quad.geminiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your Google Gemini API key. Get one free at https://makersuite.google.com/app/apikey",
+          "scope": "application"
+        },
+        "quad.responseLanguage": {
+          "type": "string",
+          "default": "english",
+          "enum": [
+            "english",
+            "telugu",
+            "hindi",
+            "tamil",
+            "kannada",
+            "malayalam",
+            "marathi",
+            "bengali",
+            "gujarati",
+            "punjabi",
+            "spanish",
+            "french",
+            "german",
+            "portuguese",
+            "chinese",
+            "japanese",
+            "korean",
+            "arabic",
+            "russian",
+            "auto"
+          ],
+          "enumDescriptions": [
+            "English (default)",
+            "Telugu (తెలుగు)",
+            "Hindi (हिन्दी)",
+            "Tamil (தமிழ்)",
+            "Kannada (ಕನ್ನಡ)",
+            "Malayalam (മലയാളം)",
+            "Marathi (मराठी)",
+            "Bengali (বাংলা)",
+            "Gujarati (ગુજરાતી)",
+            "Punjabi (ਪੰਜਾਬੀ)",
+            "Spanish (Español)",
+            "French (Français)",
+            "German (Deutsch)",
+            "Portuguese (Português)",
+            "Chinese (中文)",
+            "Japanese (日本語)",
+            "Korean (한국어)",
+            "Arabic (العربية)",
+            "Russian (Русский)",
+            "Auto-detect from input"
+          ],
+          "description": "Language for code explanations (code/docs stay in English)"
+        },
+        "quad.documentationStyle": {
+          "type": "string",
+          "default": "auto",
+          "enum": ["auto", "jsdoc", "tsdoc", "javadoc", "google", "numpy", "sphinx", "rustdoc", "godoc", "xmldoc"],
+          "enumDescriptions": [
+            "Auto-detect based on file type",
+            "JSDoc (JavaScript/TypeScript)",
+            "TSDoc (TypeScript)",
+            "Javadoc (Java/Kotlin)",
+            "Google style (Python)",
+            "NumPy style (Python)",
+            "Sphinx style (Python)",
+            "Rustdoc (Rust)",
+            "GoDoc (Go)",
+            "XML Documentation (C#)"
+          ],
+          "description": "Documentation style to generate"
+        },
+        "quad.includeExamples": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include usage examples in generated documentation"
+        },
+        "quad.includeTypes": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include type information in documentation"
+        },
+        "quad.maxTokensPerRequest": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 100,
+          "maximum": 4000,
+          "description": "Maximum tokens per AI request (affects detail level)"
+        },
+        "quad.showInlinePreview": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inline preview before inserting documentation"
+        },
+        "quad.useQuadPool": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use QUAD's shared API pool when you don't have your own key (20 req/day free)"
+        },
+        "quad.telemetry": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send anonymous usage statistics to help improve the extension"
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "typescript",
+        "extensions": [".ts", ".tsx"],
+        "aliases": ["TypeScript", "ts"]
+      },
+      {
+        "id": "javascript",
+        "extensions": [".js", ".jsx", ".mjs"],
+        "aliases": ["JavaScript", "js"]
+      },
+      {
+        "id": "python",
+        "extensions": [".py", ".pyw"],
+        "aliases": ["Python", "py"]
+      },
+      {
+        "id": "java",
+        "extensions": [".java"],
+        "aliases": ["Java"]
+      },
+      {
+        "id": "go",
+        "extensions": [".go"],
+        "aliases": ["Go", "golang"]
+      },
+      {
+        "id": "rust",
+        "extensions": [".rs"],
+        "aliases": ["Rust"]
+      },
+      {
+        "id": "cpp",
+        "extensions": [".cpp", ".cc", ".cxx", ".hpp", ".h"],
+        "aliases": ["C++", "cpp"]
+      },
+      {
+        "id": "csharp",
+        "extensions": [".cs"],
+        "aliases": ["C#", "csharp"]
+      },
+      {
+        "id": "php",
+        "extensions": [".php"],
+        "aliases": ["PHP"]
+      },
+      {
+        "id": "ruby",
+        "extensions": [".rb"],
+        "aliases": ["Ruby"]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^2.22.0",
+    "eslint": "^8.55.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.2.0",
+    "tree-sitter": "^0.20.6",
+    "tree-sitter-typescript": "^0.20.5",
+    "tree-sitter-javascript": "^0.20.3",
+    "tree-sitter-python": "^0.20.4",
+    "tree-sitter-java": "^0.20.2",
+    "tree-sitter-go": "^0.20.0",
+    "tree-sitter-rust": "^0.20.4",
+    "tree-sitter-c": "^0.20.6",
+    "tree-sitter-cpp": "^0.20.3",
+    "tree-sitter-c-sharp": "^0.20.0",
+    "tree-sitter-php": "^0.20.0",
+    "tree-sitter-ruby": "^0.20.0"
+  }
+}
